@@ -10,5 +10,5 @@
 
 ##### Thanks to [ExampleBot](https://github.com/dariusk/examplebot) that helped me figure out the twitter bot part
 ##### Also thanks to [rwaldron's spark-io project](https://github.com/rwaldron/spark-io) (Even though I didn't end up using it)
-##### Also be sure to check out [Spark's documentation on functions](https://github.com/spark/docs/blob/master/docs/api.md) to really make things awesome
+##### Be sure to check out [Spark's documentation on functions](https://github.com/spark/docs/blob/master/docs/api.md) because it was sorta hard to find and did exactly what I needed!
 
