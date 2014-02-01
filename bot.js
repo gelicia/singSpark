@@ -6,6 +6,11 @@ var rest = require('restler');
 var T = new Twit(require('./twitterConfig.js'));
 var sparkConfig = require('./sparkConfig.js');
 
+//this could probably be part of the config file, but the config is pretty straightforward as it is
+var userName = '';
+T.get('account/verify_credentials', {}, function(error, data){
+	userName = data.screen_name;
+});
 
 function playLatestMention() {
 	//get the 10 latest mentions
@@ -30,18 +35,25 @@ function noiseToSignal(mentions){
 	var music = {};
 
 	for (var i = 0; i < mentions.length; i++) {
-		//mentions[i];
-	}
+		//make sure it's a direct mention that wasn't played before / (it favorites when it plays)
+		if(mentions[i].in_reply_to_screen_name == userName && !mentions[i].favorited){
+			var tweetText = mentions[i].text.substring(11, mentions[i].text.length);
+			//look for strings that are all notes
+			var re = new RegExp("(^|\\s)(c|d|e|f|g|a|b|C|\\s)+", "g");
+			var match = re.exec(tweetText);
+			//grab the tweet that has a match and the match is more than three notes 
+			if (match !== null && match[0].trim().length > 3){
+				music.notes = match[0].trim();
+				music.playID = mentions[i].id_str;
+				return music;
+			}
+		}
 
-	//var re = new RegExp("(c|d|e|f|g|a|b|C)+", "g");
-	var thisTweet = data[0].text;
-		
-	console.log(data[0]);
-	console.log(music);
-	return music;
+		if (music.notes !== undefined){
+			return music;
+		}
+	}
 }
 
-//playLatestMention();
-// ...and then every hour after that. Time here is in milliseconds, so
-// 1000 ms = 1 second, 1 sec * 60 = 1 min, 1 min * 60 = 1 hour --> 1000 * 60 * 60
-//setInterval(playLatestMention, 1000 * 60);
+playLatestMention(); 
+setInterval(playLatestMention, 1000 * 60);

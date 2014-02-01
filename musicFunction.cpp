@@ -27,6 +27,7 @@ int singToMe(String args)
   for (int i = 0; i < args.length(); i++) {
     char oneNote = args.charAt(i);
     if (oneNote == ' ') {
+      //this doesn't work (doesn't pass a space) but I don't know what will
       delay(tempo);
     } else {
       playNote(oneNote, tempo);
